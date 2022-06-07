@@ -1,19 +1,19 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class UI implements ActionListener
 {
 	JFrame frame;
 	JPanel panel;
-	
+	private JTextField accTF,nameTF,passTF,idTF;
 	private Member member;
 	public int w=1000,h=750;
 	public static void main(String[] args)
 	{
 		UI ui=new UI();
-		ui.s1();
+		ui.ui();
 	}
 
 	public UI()
@@ -39,26 +39,45 @@ public class UI implements ActionListener
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		frame.remove(panel);
 		switch (Integer.parseInt(e.getActionCommand()))
 		{
 			case 0:
-				s1();
+				frame.remove(panel);
+				ui();
 				break;
 			case 1:
 				log_in();
 				break;
 			case 2:
 				sign_up();
-			case 3:
-				home();
 				break;
+			case 3:
+				if(accTF.getText().isBlank()||nameTF.getText().isBlank()||passTF.getText().isBlank()||idTF.getText().isBlank())
+				{
+					JOptionPane.showMessageDialog(null, "輸入值不能為空!","警告",3);
+					sign_up();
+				}
+				else
+				{
+					member=new Member(accTF.getText(),nameTF.getText(),passTF.getText(),idTF.getText());
+					if(member.findAccount()==-1)
+					{
+						member.sign_up();
+						home();
+					}
+					else
+					{
+						member.sign_up();
+						sign_up();
+					}
+				}
 			default:
 				break;
 		}
 	}
-	public void s1()
+	public void ui()
 	{
+
 		panel= new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER,w/3,h*3/4));
 		//new ImageIcon("user.png")
@@ -80,6 +99,7 @@ public class UI implements ActionListener
 
 	public void log_in()
 	{
+		frame.remove(panel);
 		panel= new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT,w/50,h/2));
 		//new ImageIcon("user.png")
@@ -90,17 +110,13 @@ public class UI implements ActionListener
 		JLabel accLB=new JLabel("帳號");
 		JTextField accTF = new JTextField(16);
 		JLabel passLB=new JLabel("密碼");
-		JPasswordField passTF = new JPasswordField(12); // 非明文密碼輸入；
+		JTextField passTF = new JPasswordField(12); // 非明文密碼輸入；
 		
 		panel.add(accLB);
 		panel.add(accTF);
 		panel.add(passLB);
 		panel.add(passTF);
-		String password = String.valueOf(passTF.getPassword());
-		if(accTF.getText()!=null && password!=null){member=new Member(accTF.getText(),password);}
-		else{JOptionPane.showMessageDialog(null, "輸入值不能為空!","警告",3);}
-		member=new Member(accTF.getText(),password);
-		confirm.setActionCommand(member.log_in());
+		
 		back.setActionCommand("0");
 		confirm.addActionListener(this);
 		back.addActionListener(this);
@@ -113,6 +129,7 @@ public class UI implements ActionListener
 	
 	public void sign_up()
 	{
+		frame.remove(panel);
 		panel= new JPanel();
 		panel.setLayout(new FlowLayout());
 		//new ImageIcon("user.png")
@@ -121,27 +138,23 @@ public class UI implements ActionListener
 		JButton back = new JButton("返回");
 
 		JLabel nameLB=new JLabel("姓名");
-		JTextField nameTF = new JTextField(16);
+		nameTF = new JTextField(16);
 		JLabel idLB=new JLabel("身分");
-		JTextField idTF = new JTextField(16);
+		idTF = new JTextField(16);
 		JLabel accLB=new JLabel("帳號");
-		JTextField accTF = new JTextField(16);
+		accTF = new JTextField(16);
 		JLabel passLB=new JLabel("密碼");
-		JPasswordField passTF = new JPasswordField(12); // 非明文密碼輸入；
-		panel.add(nameLB);
-		panel.add(nameTF);
-		panel.add(idLB);
-		panel.add(idTF);
+		passTF = new JPasswordField(12); // 非明文密碼輸入；
 		panel.add(accLB);
 		panel.add(accTF);
+		panel.add(nameLB);
+		panel.add(nameTF);
 		panel.add(passLB);
 		panel.add(passTF);
+		panel.add(idLB);
+		panel.add(idTF);
 
-		String password = String.valueOf(passTF.getPassword());
-		if(accTF.getText()!=null && nameTF.getText()!=null && password!=null && idTF.getText()!=null){member=new Member(accTF.getText(), nameTF.getText(),password,idTF.getText());}
-		else{JOptionPane.showMessageDialog(null, "輸入值不能為空!","警告",3);}
-
-		confirm.setActionCommand(member.sign_up());
+		confirm.setActionCommand("3");
 		back.setActionCommand("0");
 		confirm.addActionListener(this);
 		back.addActionListener(this);
@@ -154,6 +167,7 @@ public class UI implements ActionListener
 	
 	public void home()
 	{
+		frame.remove(panel);
 		panel= new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER,w/50,h/4));
 		
@@ -181,7 +195,7 @@ public class UI implements ActionListener
 		panel.add(returnBook);
 		panel.add(inform);
 		panel.add(history);
-		if(member.getIdentity()=="Admin")
+		if(member.getIdentity().equals("Admin"))
 		{
 			panel.add(manaBook);
 			panel.add(fee);

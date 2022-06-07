@@ -4,9 +4,8 @@ import javax.swing.JOptionPane;
 public class Member
 {
 	protected Data data=new Data();
-	protected ArrayList<Member> members=data.readMembers();
-	protected ArrayList<String> member=new ArrayList<String>(); 
-
+	protected ArrayList<String> member=new ArrayList<String>();
+	private int accIndex;
 	public Member(String account,String name,String password,String identity)
 	{
 		setAccount(account);
@@ -20,31 +19,32 @@ public class Member
 		setPassword(password);
 	}
 
-	public String sign_up()
+	public boolean sign_up()
 	{
-		if(findAccount(this)==-1)
+		if(accIndex==-1)
 		{
+			JOptionPane.showMessageDialog(null,"註冊成功\n歡迎 "+getName(),"歡迎",1);
 			data.addMember(this);
-			return "3";
+			return true;
 		}
 		else
 		{
 			JOptionPane.showMessageDialog(null,"此帳號已被註冊!","錯誤",0);
-			return "2";
+			return false;
 		}
 	}
 
 	public String log_in()
 	{
-		if(findAccount(this)==-1)
+		if(accIndex==-1)
 		{
 			JOptionPane.showMessageDialog(null,"此帳號不存在!","錯誤",0);
 			return "2";
 		}
-		else if(members.get(findAccount(this)).getPassword()==getPassword())
+		else if(data.readMembers().get(accIndex).getPassword().equals(getPassword()))
 		{
-			setName(members.get(findAccount(this)).getName());
-			setIdentity(members.get(findAccount(this)).getIdentity());
+			setName(data.readMembers().get(accIndex).getName());
+			setIdentity(data.readMembers().get(accIndex).getIdentity());
 			JOptionPane.showMessageDialog(null,"登入成功\n歡迎 "+getName(),"歡迎",1);
 			return "3";
 		}
@@ -55,12 +55,12 @@ public class Member
 		}
 	}
 
-	public int findAccount(Member member)
+	public int findAccount()
 	{
-		int accIndex=-1;
-		for(int i=0;i<members.size();i++)
+		accIndex=-1;
+		for(int i=0;i<data.readMembers().size();i++)
 		{
-			if(members.get(i).getAccount()==member.getAccount()){accIndex=i;}
+			if(data.readMembers().get(i).getAccount().equals(getAccount())){accIndex=i;}
 		}
 		return accIndex;
 	}

@@ -1,2 +1,1 @@
-QQQ@gmail.com	Java	123456	Admin
-QQQ@gmail.com	Java	123456	Admin
+110403033	Wang	1234	Student

@@ -14,7 +14,7 @@ public class Data
 	public String input,output;
 	public String[] inputArray=new String[5];
 	public String[] inputArray2=new String[4];
-
+	int c=0;
 	public void addBook(Book book)
 	{
 		try
@@ -54,8 +54,8 @@ public class Data
 	{
 		try
 		{
-			FileWriter fw = new FileWriter(MemberTXT);
-        	fw.append(member.toString());
+			FileWriter fw = new FileWriter(MemberTXT,true);
+        	fw.write(member.toString());
        		fw.flush();
         	fw.close();
 		} catch (FileNotFoundException e) {
@@ -71,8 +71,9 @@ public class Data
 		{
 			FileReader fr = new FileReader(MemberTXT);
 			BufferedReader br = new BufferedReader(fr);
+			members=new ArrayList<>();
 			while (br.ready())
-			{
+			{	
 				input= br.readLine();
 				inputArray2=input.split("\t");
 				members.add(new Member(inputArray2[0],inputArray2[1],inputArray2[2],inputArray2[3]));
@@ -86,4 +87,20 @@ public class Data
 		}
 		return null;	
 	}
+	public void rewriteMembers(ArrayList<Member> members)
+	{
+		try
+		{
+			FileWriter fw = new FileWriter(MemberTXT,true);
+			for(int i=0;i<members.size();i++){output+=members.get(i).toString();}
+        	fw.write(output);
+       		fw.flush();
+        	fw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();;
+		}
+	}
+	public ArrayList<Member> getMembers(){return members;}
 }

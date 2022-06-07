@@ -1,8 +1,0 @@
-97654321	bookname	author	publisher	in_Library
-97654321	bookname	author	publisher	in_Library
-97654321	bookname	author	publisher	in_Library
-97654321	bookname	author	publisher	in_Library
-97654321	bookname	author	publisher	in_Library
-97654321	bookname	author	publisher	in_Library
-97654321	bookname	author	publisher	in_Library
-97654321	bookname	author	publisher	in_Library
